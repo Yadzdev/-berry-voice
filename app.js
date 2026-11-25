@@ -10,12 +10,12 @@
   const submit = form.querySelector('button[type="submit"]');
   const originalButtonText = submit.querySelector('span').textContent;
 
-  const sanitizeCode = (value) => value.replace(/\D/g, '').slice(0, 4);
+  const sanitizeCode = (value) => value.replace(/[^a-z0-9]/gi, '').slice(0, 8);
 
   input.addEventListener('input', () => {
     const clean = sanitizeCode(input.value);
     if (input.value !== clean) input.value = clean;
-    const valid = /^[0-9]{4}$/.test(clean);
+    const valid = /^[a-z0-9]{8}$/i.test(clean);
     field.classList.toggle('is-valid', valid);
     error.textContent = '';
     handoff.hidden = true;
@@ -45,8 +45,8 @@
     event.preventDefault();
     const code = sanitizeCode(input.value);
 
-    if (!/^[0-9]{4}$/.test(code)) {
-      error.textContent = 'Digite o código numérico exibido após usar /voice no Minecraft.';
+    if (!/^[a-z0-9]{8}$/i.test(code)) {
+      error.textContent = 'Digite os 8 caracteres (letras e números) exibidos após usar /voice no Minecraft.';
       input.focus();
       return;
     }
