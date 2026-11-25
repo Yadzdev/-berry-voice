@@ -62,14 +62,14 @@
           <span class="head-mic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3m-4 0h8"/></svg></span>
         </div>
         <form id="pair-form" novalidate>
-          <label for="pair-code">CÓDIGO DE PAREAMENTO</label>
+          <label for="pair-code">CÓDIGO DE PAREAMENTO · 8 CARACTERES</label>
           <div class="code-field-wrap">
             <span class="code-prefix">/VOICE</span>
-            <input id="pair-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="4" minlength="4" pattern="[0-9]{4}" placeholder="0000" aria-describedby="code-hint code-error" required>
+            <input id="pair-code" name="code" type="text" inputmode="text" autocomplete="one-time-code" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="12" pattern="[A-Za-z0-9 -]{8,12}" placeholder="AB12CD34" aria-describedby="code-hint code-error" required>
             <span class="input-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></span>
           </div>
           <div class="field-meta">
-            <span id="code-hint">Código temporário de uso único.</span>
+            <span id="code-hint">8 caracteres • letras e números • uso único.</span>
             <span class="expiry"><span class="expiry-dot"></span> EXPIRA EM 2 MIN</span>
           </div>
           <p class="form-error" id="code-error" role="alert"></p>
@@ -85,7 +85,7 @@
         <div class="divider-label"><span></span> ANTES DE CONECTAR <span></span></div>
         <div class="steps-mini">
           <div><b>1</b><span>Entre na BerryMC e use <code>/voice</code>.</span></div>
-          <div><b>2</b><span>Digite aqui o código exibido no jogo.</span></div>
+          <div><b>2</b><span>Digite aqui os 8 caracteres exibidos no jogo.</span></div>
           <div><b>3</b><span>Permita o microfone no cliente de voz.</span></div>
         </div>
         <p class="card-footnote"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.2c0 4.5 3.1 7.8 7.5 9.8 4.4-2 7.5-5.3 7.5-9.8V6L12 3Z"/><path d="M12 8v4m0 4h.01"/></svg> O pareamento e o áudio são concluídos pelo cliente seguro do Bedrock Simple Voice.</p>
