@@ -1,13 +1,13 @@
-<<<<<<< HEAD
 # Berry Voice — BerryMC
 
-Site estático responsivo para publicar no GitHub Pages em `https://voice.berrymc.net.br`.
+Portal estático responsivo da BerryMC para orientar o pareamento do Bedrock Simple Voice.
 
 ## O que o site faz
 
-- Apresenta o portal Berry Voice para Java e Bedrock.
-- Recebe o código numérico gerado pelo comando `/voice` no Minecraft.
-- Copia o código para a área de transferência e abre o cliente web oficial do Bedrock Simple Voice em uma nova aba.
+- Apresenta o portal Berry Voice para jogadores Java e Bedrock.
+- Aceita o código de pareamento de 8 caracteres exibido pelo comando `/voice`.
+- Aceita letras e números; espaços e hífens usados apenas para separar o código são removidos.
+- Copia o código limpo para a área de transferência e abre o cliente web oficial do Bedrock Simple Voice.
 - O jogador cola o código no campo **Connection code** do cliente oficial e conclui o pareamento por lá.
 - Não armazena o código, não solicita credenciais e não transmite áudio.
 
@@ -15,36 +15,23 @@ Site estático responsivo para publicar no GitHub Pages em `https://voice.berrym
 
 Este projeto é um portal personalizado, não uma implementação do protocolo de áudio do Bedrock Simple Voice. A validação do código, a sessão de voz, o microfone e o áudio continuam no cliente oficial (`https://voice.byterider.xyz/`) e no relay configurado pelo plugin.
 
-O site no GitHub Pages, sozinho, não consegue validar um código `/voice` nem substituir o relay. Não há integração documentada de deep-link para preencher automaticamente o código no cliente; por isso, o portal copia o código e abre o cliente oficial sem enviar o código na URL.
+O site no GitHub Pages, sozinho, não consegue validar um código `/voice` nem substituir o relay. Por isso, o portal copia o código e abre o cliente oficial; o jogador ainda precisa colá-lo no cliente.
 
-Para colocar também o cliente de áudio sob um domínio próprio, será necessário configurar o modo **Direct** do plugin ou executar o **Standalone Relay** próprio e publicar o serviço com HTTPS/WSS. Isso é uma etapa de infraestrutura separada do GitHub Pages.
+Para hospedar também o cliente de áudio sob um domínio próprio, será necessário configurar o modo Direct do plugin ou executar o Standalone Relay próprio. Isso é uma etapa de infraestrutura separada do GitHub Pages.
 
-## Publicar no GitHub Pages
+## Publicação
 
-1. Crie um repositório no GitHub, por exemplo `berry-voice`.
-2. Envie todos os arquivos desta pasta para a raiz do repositório.
-3. Abra **Settings → Pages**.
-4. Em **Build and deployment**, selecione **Deploy from a branch**, escolha `main` e `/ (root)`.
-5. Em **Custom domain**, informe `voice.berrymc.net.br` e salve.
-6. No provedor DNS do domínio `berrymc.net.br`, crie:
+O repositório publica a pasta raiz (`main / (root)`) pelo GitHub Pages. O domínio personalizado configurado é:
 
-   - Tipo: `CNAME`
-   - Nome/Host: `voice`
-   - Destino/Target: `SEU-USUARIO.github.io` (ou o domínio GitHub Pages da sua organização)
+`voice.berrymc.net.br`
 
-7. Aguarde o DNS propagar. Quando o GitHub liberar, ative **Enforce HTTPS** em Settings → Pages.
+O DNS deve conter um registro CNAME de `voice` apontando para `yadzdev.github.io`. O arquivo `CNAME` já está incluído.
 
-O arquivo `CNAME` já está incluído. Não coloque o `network.secret` do plugin em nenhum arquivo deste repositório: ele é segredo de servidor e nunca deve ser publicado no site.
+**Nunca publique o `network.secret` do plugin neste repositório.** Ele deve permanecer apenas nas configurações privadas do proxy e dos backends.
 
-## Testar localmente
+## Arquivos
 
-Abra `index.html` diretamente no navegador para conferir o layout. Para testar a cópia automática, use um servidor local ou publique em HTTPS; alguns navegadores bloqueiam Clipboard API fora de contextos seguros.
-
-## Personalização
-
-- Cores, layout e responsividade: `styles.css`
-- Fluxo de código/cópia/abertura do cliente: `app.js`
-- Conteúdo e marcação: `index.html`
-=======
-# -berry-voice
->>>>>>> c6ce9fc36b4ed3eabb617aa24c85d3ec89733865
+- `index.html` e `voz/index.html`: interface do portal.
+- `styles.css`: cores, layout e responsividade.
+- `app.js`: normalização, validação local do tamanho, cópia e abertura do cliente oficial.
+- `assets/`: identidade visual da BerryMC.
