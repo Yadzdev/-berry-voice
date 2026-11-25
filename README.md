@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Berry Voice — BerryMC
 
 Site estático responsivo para publicar no GitHub Pages em `https://voice.berrymc.net.br`.
@@ -44,3 +45,6 @@ Abra `index.html` diretamente no navegador para conferir o layout. Para testar a
 - Cores, layout e responsividade: `styles.css`
 - Fluxo de código/cópia/abertura do cliente: `app.js`
 - Conteúdo e marcação: `index.html`
+=======
+# -berry-voice
+>>>>>>> c6ce9fc36b4ed3eabb617aa24c85d3ec89733865
