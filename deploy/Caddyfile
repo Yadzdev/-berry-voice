@@ -1,0 +1,16 @@
+# Public entry point for the Bedrock browser client only.
+# Keep the Velocity API port (9876) and backend WebSocket path (/backend)
+# reachable only from trusted private backend/reverse-proxy networks.
+relay.berrymc.net.br {
+    @voiceSockets path /ws
+    reverse_proxy @voiceSockets 127.0.0.1:8766 {
+        header_up X-Real-IP {remote_host}
+    }
+
+    @publicApi path /api/* /health
+    reverse_proxy @publicApi 127.0.0.1:9876 {
+        header_up X-Real-IP {remote_host}
+    }
+
+    respond "Not found" 404
+}

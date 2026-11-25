@@ -1,0 +1,23 @@
+# BerryVoice Paper 2.1.1 — instale em CADA backend Paper que participará da voz.
+site-url: "https://voice.berrymc.net.br"
+
+# Deve ser único por backend e idêntico ao server-id informado ao gerar o código.
+# Ex.: survival, lobby, eventos.
+server-id: "survival"
+
+api:
+  # Endereço privado da API no Velocity. 127.0.0.1 só funciona se Paper e Velocity
+  # compartilharem a mesma rede/namespace. Em Pterodactyl, use o IP privado/alocação
+  # alcançável do container Velocity.
+  base-url: "http://127.0.0.1:9876"
+  # A MESMA chave api.secret configurada em plugins/berryvoice/config.properties no Velocity.
+  # Nunca publique esta chave no GitHub nem no site.
+  secret: "CHANGE_ME_TO_A_RANDOM_SECRET_AT_LEAST_32_CHARS"
+
+relay:
+  # WebSocket PRIVADO do Velocity. Não use o domínio público como origem do backend.
+  # Se estiver em containers separados, use o IP privado/alocação do Velocity.
+  websocket-url: "ws://127.0.0.1:8766/backend"
+
+welcome:
+  enabled: true

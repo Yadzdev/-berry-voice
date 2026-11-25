@@ -1,0 +1,16 @@
+name: BerryVoice
+version: 2.1.1
+main: br.net.berrymc.voice.paper.BerryVoicePaper
+author: Yadzdev
+description: BerryMC bridge between Simple Voice Chat Java clients and Bedrock web clients.
+api-version: '1.21'
+depend: [voicechat, floodgate]
+commands:
+  voz:
+    description: Abre as configurações do Berry Voice.
+    usage: /voz [conectar|mute|desmutar|grupos|criar|entrar|sair|reload]
+    aliases: [voice]
+permissions:
+  berryvoice.admin:
+    description: Permite recarregar mensagens e menus do BerryVoice.
+    default: op

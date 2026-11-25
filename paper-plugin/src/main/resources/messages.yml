@@ -1,0 +1,32 @@
+# Edite as mensagens sem recompilar. Cores: &a &b &c &e &f &7 &l etc.
+prefix: "&8[&aBerryVoice&8] &r"
+join:
+  - "&aBem-vindo ao chat de voz da BerryMC!"
+join-java:
+  - "&aO Simple Voice Chat está disponível na BerryMC!"
+  - "&7Java: use o mod dentro do Minecraft e pressione &fV&7 para abrir as configurações."
+  - "&7Você não precisa abrir o site Berry Voice."
+join-bedrock:
+  - "&aConecte-se ao chat de voz da BerryMC!"
+  - "&7Digite &f/voz &7para abrir o menu e gerar seu código."
+  - "&7Depois acesse &b{site} &7e informe o código."
+connect:
+  header: "&a&lBERRY VOICE &8• &fPAREAMENTO"
+  code: "&7Seu código temporário: &a&l{code}"
+  site: "&7Acesse &b{site} &7e informe esse código."
+  expiry: "&8O código expira em {seconds} segundos e só pode ser usado uma vez."
+  command: "&8Para gerar outro código, use {command}."
+java-use-mod: "&7Java: use o mod Simple Voice Chat no próprio jogo. Pressione &fV&7 para abrir o menu de voz."
+mute:
+  enabled: "&cSeu microfone foi mutado no chat de voz."
+  disabled: "&aSeu microfone foi desmutado no chat de voz."
+groups:
+  created: "&aGrupo &f{name} &acriado. Você entrou nele."
+  joined: "&aVocê entrou no grupo &f{group}&a."
+  left: "&7Você voltou ao canal de proximidade."
+usage:
+  create: "&cUse: /voz criar <nome>"
+  join: "&cUse: /voz entrar <id-do-grupo>"
+no-permission: "&cVocê não tem permissão para isso."
+reloaded: "&aConfigurações, mensagens e menus recarregados."
+api-error: "&cNão foi possível falar com o serviço BerryVoice: {error}"

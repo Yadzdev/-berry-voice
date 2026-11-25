@@ -1,0 +1,50 @@
+package br.net.berrymc.voice.paper;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+
+final class PaperApiClient {
+    private final HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(4)).build();
+    private final String baseUrl;
+    private final String secret;
+
+    PaperApiClient(String baseUrl, String secret) {
+        this.baseUrl = baseUrl.replaceAll("/+$", ""); this.secret = secret;
+    }
+
+    CompletableFuture<JsonObject> post(String path, JsonObject body) {
+        HttpRequest request = HttpRequest.newBuilder(URI.create(baseUrl + path))
+                .timeout(Duration.ofSeconds(8))
+                .header("Content-Type", "application/json")
+                .header("X-BerryVoice-Key", secret)
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8)).build();
+        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+                .thenApply(response -> parse(response.statusCode(), response.body()));
+    }
+
+    CompletableFuture<JsonObject> get(String path) {
+        HttpRequest request = HttpRequest.newBuilder(URI.create(baseUrl + path))
+                .timeout(Duration.ofSeconds(8)).header("X-BerryVoice-Key", secret).GET().build();
+        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8))
+                .thenApply(response -> parse(response.statusCode(), response.body()));
+    }
+
+    private JsonObject parse(int status, String body) {
+        JsonObject json;
+        try { json = JsonParser.parseString(body == null || body.isBlank() ? "{}" : body).getAsJsonObject(); }
+        catch (Exception ex) { json = new JsonObject(); json.addProperty("error", "Resposta inválida da API BerryVoice."); }
+        if (status < 200 || status >= 300) {
+            if (!json.has("error")) json.addProperty("error", "API respondeu HTTP " + status);
+            throw new IllegalStateException(json.get("error").getAsString());
+        }
+        return json;
+    }
+}

@@ -1,0 +1,56 @@
+# Menu Java editável. Os slots começam em 0.
+main:
+  title: "&8Berry Voice &7• &aConfigurações"
+  size: 27
+  items:
+    connect:
+      slot: 11
+      material: ENDER_EYE
+      name: "&aSimple Voice Chat"
+      lore:
+        - "&7Java não precisa abrir o site."
+        - "&7Pressione &fV &7para falar no jogo."
+      action: java-help
+    groups:
+      slot: 13
+      material: NAME_TAG
+      name: "&bGrupos de voz"
+      lore:
+        - "&7Veja as salas disponíveis."
+        - "&7Escolha um grupo para conversar."
+      action: groups
+    mute:
+      slot: 15
+      material: REDSTONE_TORCH
+      name: "&eMutar / desmutar"
+      lore:
+        - "&7Ative ou desative seu microfone."
+      action: mute
+    leave:
+      slot: 22
+      material: OAK_DOOR
+      name: "&cSair do grupo"
+      lore:
+        - "&7Voltar ao canal de proximidade."
+      action: leave
+    close:
+      slot: 26
+      material: BARRIER
+      name: "&cFechar"
+      lore:
+        - "&7Fechar este menu."
+      action: close
+
+groups:
+  title: "&8Berry Voice &7• &bGrupos"
+
+bedrock:
+  title: "Berry Voice"
+  content: "Gerencie sua conexão, microfone e grupos de voz. Para criar um grupo, use /voz criar <nome> no chat."
+  buttons:
+    connect: "Gerar código para conectar"
+    groups: "Grupos de voz"
+    mute: "Mutar / desmutar microfone"
+    leave: "Sair do grupo atual"
+  groups-title: "Grupos Berry Voice"
+  groups-content: "Escolha o grupo para entrar. Para criar: /voz criar <nome>"

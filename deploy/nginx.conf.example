@@ -1,0 +1,34 @@
+server {
+    listen 443 ssl http2;
+    server_name relay.berrymc.net.br;
+
+    # Configure cert/key paths using your certificate manager.
+    ssl_certificate     /etc/letsencrypt/live/relay.berrymc.net.br/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/relay.berrymc.net.br/privkey.pem;
+
+    # Browser voice socket. Do not publish /backend.
+    location = /ws {
+        proxy_pass http://127.0.0.1:8766;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_read_timeout 3600s;
+    }
+
+    # Public browser APIs only. /internal/pair/create remains private for Paper.
+    location /api/ {
+        proxy_pass http://127.0.0.1:9876;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location = /health {
+        proxy_pass http://127.0.0.1:9876;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / { return 404; }
+}

@@ -1,0 +1,87 @@
+package br.net.berrymc.voice.paper;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/** Authenticated persistent tunnel from one Paper backend to the Velocity relay. */
+final class BackendRelayClient extends WebSocketClient {
+    private final BerryVoicePaper plugin;
+    private final String serverId;
+    private final String secret;
+    private final Gson gson = new Gson();
+    private final AtomicBoolean authenticated = new AtomicBoolean(false);
+    private final AtomicBoolean connectionAttempt = new AtomicBoolean(false);
+    private final AtomicBoolean everConnected = new AtomicBoolean(false);
+
+    BackendRelayClient(BerryVoicePaper plugin, String url, String serverId, String secret) {
+        super(URI.create(url));
+        this.plugin = plugin;
+        this.serverId = serverId;
+        this.secret = secret;
+        setConnectionLostTimeout(30);
+    }
+
+    @Override public void onOpen(ServerHandshake handshake) {
+        connectionAttempt.set(false);
+        everConnected.set(true);
+        JsonObject auth = new JsonObject();
+        auth.addProperty("type", "backend_auth");
+        auth.addProperty("serverId", serverId);
+        auth.addProperty("secret", secret);
+        send(gson.toJson(auth));
+    }
+
+    @Override public void onMessage(String message) {
+        try {
+            JsonObject json = com.google.gson.JsonParser.parseString(message).getAsJsonObject();
+            String type = json.has("type") ? json.get("type").getAsString() : "";
+            if ("backend_ready".equals(type)) {
+                authenticated.set(true);
+                plugin.getLogger().info("Conexão segura com o relay Velocity estabelecida para o backend '" + serverId + "'.");
+                return;
+            }
+            if ("backend_error".equals(type)) {
+                plugin.getLogger().warning("Relay recusou o backend: " + (json.has("message") ? json.get("message").getAsString() : "erro desconhecido"));
+                return;
+            }
+            if (authenticated.get()) plugin.handleBackendMessage(json);
+        } catch (Exception ex) {
+            plugin.getLogger().warning("Mensagem inválida recebida do relay: " + ex.getMessage());
+        }
+    }
+
+    @Override public void onClose(int code, String reason, boolean remote) {
+        authenticated.set(false);
+        connectionAttempt.set(false);
+        plugin.getLogger().warning("Conexão com o relay encerrada (" + code + "): " + reason);
+    }
+
+    @Override public void onError(Exception ex) {
+        connectionAttempt.set(false);
+        if (ex != null) plugin.getLogger().warning("WebSocket BerryVoice: " + ex.getMessage());
+    }
+
+    void ensureConnected() {
+        if (isOpen() || isClosing() || !connectionAttempt.compareAndSet(false, true)) return;
+        try {
+            if (everConnected.get()) reconnect();
+            else connect();
+        } catch (Throwable ex) {
+            connectionAttempt.set(false);
+            plugin.getLogger().warning("Não foi possível conectar ao relay BerryVoice: " + ex.getMessage());
+        }
+    }
+
+    boolean isAuthenticated() { return authenticated.get() && isOpen(); }
+
+    void sendJson(JsonObject json) {
+        if (!isAuthenticated()) return;
+        try { send(gson.toJson(json)); }
+        catch (Exception ex) { plugin.getLogger().warning("Não foi possível enviar evento ao relay: " + ex.getMessage()); }
+    }
+}
